@@ -8,8 +8,9 @@ setup(
     install_requires=[
         'Click',
     ],
-    entry_points='''
-        [console_scripts]
-        nodes=commands.nodes:list
-    ''',
+    entry_points={
+		'console_scripts': [
+			'sdn=comandos.sdn:cli',
+		]
+	},
 )
