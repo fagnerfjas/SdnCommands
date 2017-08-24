@@ -10,7 +10,7 @@ setup(
     ],
     entry_points={
 		'console_scripts': [
-			'sdn=comandos.sdn:cli',
+			'sdn=src.sdn:cli',
 		]
 	},
 )

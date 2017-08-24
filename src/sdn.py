@@ -1,15 +1,19 @@
 import click
 import json, requests
+from models.config import Config
 
 @click.group()
 def cli():
 	click.echo('funcionei')
+	
 
 @cli.command()
 @click.argument('ip', nargs=2)
 @click.option('-n', '--name', type=(unicode))
 def conf(ip, name):
 	click.echo(name)
+	config = Config()
+
 
 @cli.command()
 def hosts():
