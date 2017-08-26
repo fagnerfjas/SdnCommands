@@ -32,10 +32,14 @@ class Db:
 	def criaDiretorio(self):
 		if not os.path.isdir(self.pathDb):
 			os.mkdir(self.pathDb)
-
 	
 	def getConfig(self):
 		data = self.conect()
 		dados = data.execute('''select * from config''').fetchall()
 		self.disconect()
 		return dados
+
+	def setConfig(self, ip, port, name):
+		data = self.conect()
+		data.execute('UPDATE config set ip="{new_ip}", port={new_port}, name="{new_name}"'.format(new_ip=ip, new_port=port, new_name=name))
+		self.salveDisconect()

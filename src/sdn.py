@@ -1,21 +1,29 @@
 import click
 import json, requests
+from controllers import switch
 from models.config import Config
+
+config = Config()
 
 @click.group()
 def cli():
-	click.echo('funcionei')
+	pass
 	
+@cli.command()
+@click.argument('ip', nargs=1)
+@click.argument('port', nargs=1)
+@click.argument('name', nargs=1)
+def conf(ip, port, name):
+	config.setConfig(ip, port, name)
 
 @cli.command()
-@click.argument('ip', nargs=2)
-@click.option('-n', '--name', type=(unicode))
-def conf(ip, name):
-	click.echo(name)
-	config = Config()
-
+def show_conf():
+	click.echo( config.toString() )
 
 @cli.command()
-def hosts():
-	response = requests.get("http://192.168.15.9:8080/wm/core/controller/switches/json")
-	click.echo(response.content)
+def switchs():
+	switch.switchs(config)
+
+@cli.command()
+def flow():
+	switch.sw_infor(config)
