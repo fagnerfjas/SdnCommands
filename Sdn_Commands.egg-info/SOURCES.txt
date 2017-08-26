@@ -7,7 +7,7 @@ Sdn_Commands.egg-info/top_level.txt
 src/__init__.py
 src/sdn.py
 src/controllers/__init__.py
-src/controllers/switch.py
+src/controllers/devices.py
 src/models/__init__.py
 src/models/config.py
 src/models/db.py

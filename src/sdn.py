@@ -1,9 +1,10 @@
 import click
 import json, requests
-from controllers import switch
+from controllers import devices
 from models.config import Config
 
 config = Config()
+
 
 @click.group()
 def cli():
@@ -22,8 +23,16 @@ def show_conf():
 
 @cli.command()
 def switchs():
-	switch.switchs(config)
+	devices.switchs(config)
 
 @cli.command()
 def flow():
-	switch.sw_infor(config)
+	devices.sw_infor(config)
+
+@cli.command()
+def device():
+	devices.devices(config)
+
+@cli.command()
+def deny():
+	devices.deny(config)
