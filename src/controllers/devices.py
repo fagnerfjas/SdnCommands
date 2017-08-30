@@ -1,5 +1,5 @@
 
-import json, requests
+import json, requests, click
 
 def switchs(config):
 	response = requests.get(
@@ -19,9 +19,9 @@ def devices(config):
 		)
 	print json.dumps( response.json(), indent=4, separators=(',', ': '))
 
-def deny(config):
-	
+
+
+def deny(config):	
 	payload = {"src-ip":"10.0.0.1/32","dst-ip":"10.0.0.2/32","action":"deny"}
-	
 	response = requests.post("http://%s:%d/wm/acl/rules/json" % (config.ip, config.port), json=payload)
-	print response.text
+	return response.text
