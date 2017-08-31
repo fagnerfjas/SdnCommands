@@ -1,6 +1,17 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Auth: Fagner
+# V = 1.0
+##
+## Funções de gerenciamento das ACLs para FloodLight
+##
 
 import json, requests, click
 
+'''
+	Listar ACLs
+'''
 def lista(config):
 	link = "http://%s:%s/wm/acl/rules/json" % (config.ip, config.port) 
 	response = requests.get(link)
@@ -8,7 +19,9 @@ def lista(config):
 	click.echo(click.style(responseJson , fg='green'))
 
 
-
+'''
+	Inserção de acl 
+'''
 def aclAction(prot, deny, allow, port_number, config):
 	payload = ''
 	regra_proto = ''
