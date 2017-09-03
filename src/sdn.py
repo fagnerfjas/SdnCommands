@@ -8,13 +8,19 @@ import click
 import json, requests
 from controllers import devices
 from controllers import accessLists
+from controllers import flows
 from models.config import Config
 
 config = Config()
 
+'''COLORAÇÃO DA RESPOSTA'''
+def printColor(value, color):
+	click.echo(click.style(value, fg=color))
+
 ### --------------------------------------
 @click.group()
-def cli():
+@click.option('--clear', is_flag=True, default=False, help='Usado juntamente com um subcomando')
+def cli(clear):
 	""" Aplicação para gerenciamento de controladoras SDN, com interface em linha de comando 
 	
 	\b
@@ -22,7 +28,8 @@ def cli():
 	Autor: Fagner Jefferson 
 	Organização: IFPB
 	"""
-	pass
+	if clear:
+		click.clear()	
 	
 ### --------------------------------------
 @cli.command()
@@ -37,7 +44,7 @@ def conf(ip, port, name):
 	o IP a PORTA usados no controlador para envio das 
 	requisições na rest api do controlador.
 	"""
-	config.setConfig(ip, port, name)
+	printColor( config.setConfig(ip, port, name), 'green' )
 
 
 ### --------------------------------------
@@ -45,7 +52,7 @@ def conf(ip, port, name):
 def show_conf():
 	"""Exibe as configurações atuais.
 	"""
-	click.echo( config.toString() )
+	printColor( config.toString(), 'green' )
 
 ### --------------------------------------
 @cli.command()
@@ -57,18 +64,9 @@ def switchs():
 	lista dos switchs conectados 
 	ao controlador.
 	"""
-	devices.switchs(config)
+	printColor( devices.switchs(config), 'green')
 
-### --------------------------------------
-@cli.command()
-def flow():
-	"""LISTA DE FLUXOS
 
-	\b
-	Mostra o json com a 
-	lista fluxos OpenFlow instalados no controlador
-	"""
-	devices.sw_infor(config)
 
 ### --------------------------------------
 @cli.command()
@@ -108,3 +106,19 @@ def acl(list, prot, deny, allow, port_number):
 
 
 
+@cli.command()
+@click.option('--list', '-l', is_flag=True, help='Lista os fluxos instalados')
+@click.option('--file', '-f', type=click.File('rb'), help='Adiciona conteúdo de um arquivo json como fluxo')
+def flow(list, file):
+	if list:
+		printColor( flows.sw_infor(config), 'blue' )
+	else:
+		if file:
+			data = file.read(1024)	
+			printColor( flows.addflow(data, config), 'cyan' )			
+
+@cli.command()
+@click.argument('input', type=click.File('rb'))
+def file(input):
+	ch = input.read(1024)
+	
